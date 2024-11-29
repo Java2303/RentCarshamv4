@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+
+    // Recuperar datos serializados desde el ViewBag
+    var marcasLabels = ViewBag.MarcasLabels;
+    var marcasTotals = ViewBag.MarcasTotals;
+
+    var cajasLabels = ViewBag.CajasLabels;
+    var cajasTotals = ViewBag.CajasTotals;
+}
+
+<h1>Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="chartMarcas"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="chartCajas"></canvas>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <canvas id="chartMarcasAlt"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="chartCajasAlt"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Usar los datos JSON serializados del ViewBag
+    const marcasLabels = @Html.Raw(marcasLabels);
+    const marcasTotals = @Html.Raw(marcasTotals);
+
+    const cajasLabels = @Html.Raw(cajasLabels);
+    const cajasTotals = @Html.Raw(cajasTotals);
+
+    // Gráficos
+    new Chart(document.getElementById('chartMarcas'), {
+        type: 'bar',
+        data: {
+            labels: marcasLabels,
+            datasets: [{
+                label: 'Total por Marca',
+                data: marcasTotals,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartCajas'), {
+        type: 'pie',
+        data: {
+            labels: cajasLabels,
+            datasets: [{
+                label: 'Total por Caja',
+                data: cajasTotals,
+                backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartMarcasAlt'), {
+        type: 'line',
+        data: {
+            labels: marcasLabels,
+            datasets: [{
+                label: 'Total por Marca',
+                data: marcasTotals,
+                borderColor: 'rgba(153, 102, 255, 1)',
+                fill: false
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartCajasAlt'), {
+        type: 'doughnut',
+        data: {
+            labels: cajasLabels,
+            datasets: [{
+                label: 'Total por Caja',
+                data: cajasTotals,
+                backgroundColor: ['#4bc0c0', '#ff9f40', '#ffcd56', '#36a2eb'],
+            }]
+        }
+    });
+</script>
